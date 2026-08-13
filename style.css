@@ -1,0 +1,398 @@
+:root {
+  --font-display: "Cinzel", serif;
+  --font-body: "Crimson Text", serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  width: 50vh;
+  margin: 0 auto; /* centers horizontally */
+  background-color: #e2dfd2;
+}
+
+body {
+  font-family: var(--font-body);
+}
+
+h1,
+h2 {
+  font-family: var(--font-display);
+  letter-spacing: 0.06em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+p {
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.7;
+  color: #31302e;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+hr {
+  border: none;
+  height: 12px;
+  background-color: #ccc;
+  margin: 40px 0;
+}
+
+/* ============ Header ============ */
+.navbar {
+  background: #f5f1e8 !important;
+}
+
+.navbar-brand {
+  font-family: var(--font-display);
+  font-size: 32px;
+  letter-spacing: 4px;
+  font-weight: bold;
+  color: black;
+}
+
+.nav-link {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: black !important;
+  margin-left: 20px;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+.navbar-toggler {
+  border: 1px solid black;
+}
+/* ============ End of Header ============ */
+
+/* ============================================================
+   Shared "story section" system
+   Every story page (Adam & Eve, Satan, Cain & Abel, Flood,
+   Tower of Babel) reuses these classes instead of duplicating
+   near-identical rules per section. Each page only needs to
+   set its background-image and pick a couple of size/layout
+   modifier classes.
+   ============================================================ */
+
+.story-section {
+  min-height: 100dvh;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  padding-top: 30px;
+}
+
+.story-section h1 {
+  display: inline-block;
+  margin: 0 auto 18px;
+  padding: 10px 22px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(17, 15, 14, 0.28);
+  backdrop-filter: blur(2px);
+  box-shadow:
+    0 0 18px rgba(255, 255, 255, 0.12),
+    0 0 30px rgba(0, 0, 0, 0.18);
+  font-size: clamp(2rem, 3vw, 3.4rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.4),
+    0 0 18px rgba(255, 255, 255, 0.2);
+}
+
+.story-section + .story-section::before {
+  content: "";
+  display: block;
+  width: min(80%, 980px);
+  height: 2px;
+  margin: 0 auto 28px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.8) 15%,
+    rgba(251, 249, 249, 0.95) 50%,
+    rgba(255, 255, 255, 0.8) 85%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 8px rgba(247, 247, 246, 0.9),
+    0 0 18px rgba(255, 255, 255, 0.7),
+    0 0 28px rgba(246, 212, 128, 0.5);
+}
+
+/* Hero text sits on top of a photographic background on every
+   page, so headings/body copy are light by default. */
+.story-section h1,
+.story-text h2 {
+  color: #f4f1ea;
+}
+
+.story-section p {
+  color: #f4f1ea;
+}
+
+/* --- Layout container for the clickable image --- */
+.story-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+/* Image pinned to the bottom-right corner (Adam & Eve, Flood) */
+.story-container--corner {
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding-left: 80px;
+  padding-bottom: 60px;
+}
+
+/* Image centered on the page (Satan, Cain & Abel, Tower of Babel) */
+.story-container--center {
+  justify-content: center;
+}
+
+/* Image centered bottom down */
+.story-container--center-bottom {
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 60px;
+}
+
+/* --- Clickable image --- */
+.story-image {
+  height: auto;
+  filter: grayscale(100%);
+  cursor: pointer;
+  transition:
+    filter 0.5s ease,
+    margin-top 0.6s ease;
+}
+
+.story-image:hover {
+  filter: grayscale(100%) drop-shadow(0 0 15px white) drop-shadow(0 0 30px white);
+  transform: scale(1.05);
+}
+
+/* Size modifiers */
+.story-image--xl {
+  width: 400px;
+}
+
+.story-image--lg {
+  width: 350px;
+}
+
+.story-image--md {
+  width: 300px;
+}
+
+.story-image--sm {
+  width: 250px;
+}
+
+/* Default: image nudges down when its text opens. Pages that want
+   the opposite (nudge up) add --shift-up as well. */
+.story-image.move-down {
+  margin-top: 60px;
+}
+
+.story-image--shift-up.move-down {
+  margin-top: -50px;
+}
+
+.story-image.clicked {
+  animation:
+    float 6s ease-in-out infinite,
+    imageClick 700ms ease;
+}
+
+/* Satan's image floats continuously even before it's clicked */
+.story-image--floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* --- Reveal text --- */
+.story-text {
+  max-width: 600px;
+  width: calc(100% - 32px);
+  margin: 8px auto 0;
+  padding: 14px 10px;
+  border-radius: 10px;
+  opacity: 0;
+  transform: translateY(-30px);
+  transition: 1s ease;
+  display: none;
+}
+
+.story-text.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  animation: textReveal 700ms ease;
+}
+
+.story-text h2 {
+  font-size: 35px;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.story-text p {
+  font-style: italic;
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.story-text.active h2 {
+  animation: textHeadingIn 500ms ease 120ms forwards;
+}
+
+.story-text.active p {
+  animation: textBodyIn 650ms ease 260ms forwards;
+}
+
+/* --- Per-page background images (the only thing that truly
+   differs between story sections) --- */
+.page-0 {
+  background-image: url("./assets/images/bible/adamEve.png");
+}
+
+.page-1 {
+  background-image: url("../../assets/images/bible/sky.png");
+}
+
+.page-2 {
+  background-image: url("./assets/images/bible/cainAbel.png");
+}
+
+.page-3 {
+  background-image: url("./assets/images/bible/TGF.png");
+}
+
+.page-4 {
+  background-image: url("./assets/images/bible/ToB.png");
+}
+
+.page-5 {
+  background-image: url("./assets/images/bible/sodomGomorrah.png");
+}
+
+.page-6 {
+  background-image: url("./assets/images/bible/mosesBackground.png");
+}
+
+.page-7 {
+  background-image: url("./assets/images/bible/TRoJ.png");
+}
+
+.page-8 {
+  background-image: url("./assets/images/bible/theLastJudgment.png");
+}
+
+/* ============ Shared keyframes ============ */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes imageClick {
+  0% {
+    filter: grayscale(100%);
+  }
+
+  40% {
+    filter: grayscale(100%) drop-shadow(0 0 18px #fff) drop-shadow(0 0 32px #fff);
+  }
+
+  100% {
+    filter: grayscale(100%);
+  }
+}
+
+@keyframes textReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes textHeadingIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes textBodyIn {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.site-footer {
+  background: rgba(245, 241, 232, 0.95);
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  padding: 20px 0;
+  margin-top: 20px;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.site-footer p {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #1f1d1a;
+  background: transparent;
+  text-shadow: none;
+}
+
+@media (max-width: 991px) {
+  .page-1 {
+    background-attachment: scroll;
+    background-position: center top;
+  }
+
+  .footer-content {
+    justify-content: center;
+    text-align: center;
+  }
+}
