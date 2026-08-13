@@ -23,3 +23,7 @@ Some illustrations used in this project are historical public domain artworks. A
 ## License
 
 This project is licensed under the MIT License.
+
+## Live Preview
+
+https://moexblade.github.io/SCRIPTURA-Echo-of-Eden/

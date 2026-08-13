@@ -3,15 +3,23 @@
   --font-body: "Crimson Text", serif;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html {
   scroll-behavior: smooth;
   width: 50vh;
+  max-width: 100vw; /* guards against 50vh exceeding the screen on short/wide viewports (landscape phones, short windows) */
   margin: 0 auto; /* centers horizontally */
   background-color: #e2dfd2;
 }
 
 body {
   font-family: var(--font-body);
+  overflow-x: hidden; /* belt-and-suspenders: nothing (hover scale, wide images) can force a horizontal scrollbar */
 }
 
 h1,
@@ -166,6 +174,7 @@ hr {
 /* --- Clickable image --- */
 .story-image {
   height: auto;
+  max-width: 90vw; /* safety net: never wider than the viewport, whatever the modifier below sets */
   filter: grayscale(100%);
   cursor: pointer;
   transition:
@@ -178,21 +187,23 @@ hr {
   transform: scale(1.05);
 }
 
-/* Size modifiers */
+/* Size modifiers - each scales smoothly between a small-screen
+   floor and the original desktop size instead of a fixed px width,
+   so the same class works from phones up to large monitors. */
 .story-image--xl {
-  width: 400px;
+  width: clamp(220px, 42vw, 400px);
 }
 
 .story-image--lg {
-  width: 350px;
+  width: clamp(200px, 38vw, 350px);
 }
 
 .story-image--md {
-  width: 300px;
+  width: clamp(180px, 34vw, 300px);
 }
 
 .story-image--sm {
-  width: 250px;
+  width: clamp(160px, 30vw, 250px);
 }
 
 /* Default: image nudges down when its text opens. Pages that want
@@ -394,5 +405,26 @@ hr {
   .footer-content {
     justify-content: center;
     text-align: center;
+  }
+}
+
+/* Small phones: the "corner" pinned-image layout (Adam & Eve, Flood,
+   Sodom & Gomorrah) doesn't have room for 80px of left padding plus a
+   wide image, so it collapses to the same centered layout the other
+   pages use. */
+@media (max-width: 576px) {
+  .story-container--corner {
+    justify-content: center;
+    padding-left: 0;
+    padding-bottom: 40px;
+  }
+
+  .story-section {
+    padding-top: 16px;
+  }
+
+  .story-section h1 {
+    padding: 8px 14px;
+    letter-spacing: 0.06em;
   }
 }
